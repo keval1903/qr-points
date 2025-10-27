@@ -15,9 +15,9 @@ class SheetsService {
     if (this.sheets) return;
 
     try {
-      console.log('Initializing Google Sheets with:');
-      console.log('- Sheet ID:', this.spreadsheetId);
-      console.log('- Service Account Email:', process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL);
+      console.log('Initializing Google Sheets with Sheet ID:', this.spreadsheetId);
+      console.log('Using Service Account Email:', process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL);
+      console.log('Private Key is present:', !!process.env.GOOGLE_PRIVATE_KEY);
       console.log('- Private Key Present:', !!process.env.GOOGLE_PRIVATE_KEY);
 
       if (!process.env.GOOGLE_PRIVATE_KEY) {
