@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Scan QR codes to earn points and rewards instantly">
+  <meta name="theme-color" content="#667eea">
+  <title>QR Points Redemption</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <div class="icon">🎁</div>
+        <h1>Points Redemption</h1>
+        <p class="subtitle">Scan QR code to earn rewards</p>
+      </div>
+
+      <form id="redemptionForm" class="form">
+        <div class="form-group">
+          <label for="codeInput">
+            <span class="label-text">Product Code</span>
+            <span class="label-badge" id="codeBadge">Waiting for QR scan</span>
+          </label>
+          <input 
+            type="text" 
+            id="codeInput" 
+            readonly 
+            placeholder="Scan QR code to auto-fill"
+            class="input-readonly"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="nameInput">
+            <span class="label-text">Your Name</span>
+            <span class="required">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="nameInput" 
+            placeholder="Enter your full name"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="phoneInput">
+            <span class="label-text">Phone Number</span>
+            <span class="required">*</span>
+          </label>
+          <input 
+            type="tel" 
+            id="phoneInput" 
+            placeholder="10-digit mobile number"
+            maxlength="10"
+            pattern="[0-9]{10}"
+            autocomplete="tel"
+            required
+          >
+          <span class="input-hint">Enter without country code</span>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submitBtn">
+          <span class="btn-text">Redeem Points</span>
+          <span class="btn-icon">→</span>
+        </button>
+      </form>
+
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Processing your redemption...</p>
+      </div>
+
+      <div class="alert" id="alert"></div>
+
+      <div class="footer">
+        <a href="dashboard.html" class="link">View My Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

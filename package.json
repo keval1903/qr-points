@@ -1,0 +1,16 @@
+{
+  "name": "qr-points-redemption",
+  "version": "1.0.0",
+  "description": "QR Code Points Redemption System with Google Sheets",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'No build step required'",
+    "deploy": "netlify deploy --prod"
+  },
+  "dependencies": {
+    "googleapis": "^128.0.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  }
+}
