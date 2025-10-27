@@ -5,6 +5,25 @@
 const sheetsService = require('./sheets-service');
 
 exports.handler = async (event, context) => {
+  // Initialize Sheets service
+  try {
+    await sheetsService.initialize();
+  } catch (error) {
+    console.error('Failed to initialize Sheets service:', error);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        success: false,
+        message: 'Failed to initialize service',
+        error: error.message
+      })
+    };
+  }
+
   // CORS headers
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -45,7 +64,7 @@ exports.handler = async (event, context) => {
 
     // Find product by token
     const product = await sheetsService.findProduct(token.trim());
-    
+
     if (!product) {
       return {
         statusCode: 404,
@@ -68,16 +87,15 @@ exports.handler = async (event, context) => {
         },
       }),
     };
-
   } catch (error) {
     console.error('Lookup error:', error);
-    
     return {
       statusCode: 500,
       headers,
       body: JSON.stringify({
         success: false,
         message: 'Server error. Please try again later.',
+        error: error.message,
       }),
     };
   }
