@@ -87,7 +87,11 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({
         success: false,
         message: 'Server error. Please try again later.',
-        error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+        error: error
+      }),
+    };
+  }
+};
       }),
     };
   }

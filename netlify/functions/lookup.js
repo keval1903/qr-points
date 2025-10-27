@@ -19,7 +19,7 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({
         success: false,
         message: 'Failed to initialize service',
-        error: error.message
+        error: error
       })
     };
   }
@@ -95,7 +95,7 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({
         success: false,
         message: 'Server error. Please try again later.',
-        error: error.message,
+        error: error,
       }),
     };
   }

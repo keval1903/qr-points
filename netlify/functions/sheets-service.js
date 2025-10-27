@@ -15,10 +15,10 @@ class SheetsService {
     if (this.sheets) return;
 
     try {
-      console.log('Initializing Google Sheets with Sheet ID:', this.spreadsheetId);
-      console.log('Using Service Account Email:', process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL);
+
+
       console.log('Private Key is present:', !!process.env.GOOGLE_PRIVATE_KEY);
-      console.log('- Private Key Present:', !!process.env.GOOGLE_PRIVATE_KEY);
+
 
       if (!process.env.GOOGLE_PRIVATE_KEY) {
         throw new Error('GOOGLE_PRIVATE_KEY is not set');
@@ -46,7 +46,7 @@ class SheetsService {
       });
 
     } catch (error) {
-      console.error('Failed to initialize Google Sheets:');
+      console.error('Failed to initialize Google Sheets:', error);
       console.error('Error name:', error.name);
       console.error('Error message:', error.message);
       if (error.response) {
@@ -156,6 +156,25 @@ class SheetsService {
     }
 
     return null;
+  }
+
+  async getCustomerRedemptions(phone) {
+    const data = await this.getSheetData('UsedQRs');
+    const redemptions = [];
+
+    for (let i = data.length - 1; i >= 1; i--) {
+      const row = data[i];
+      if (row[5] && row[5].toString().trim() === phone) {
+        redemptions.push({
+          code: row[0],
+          productName: row[1],
+          points: parseInt(row[3]) || 0,
+          redeemedAt: row[6],
+        });
+      }
+    }
+
+    return redemptions;
   }
 
   async updateCustomerPoints(phone, name, points) {
