@@ -38,19 +38,46 @@ class RedemptionApp {
     }
   }
 
-  parseURLParams() {
+  async parseURLParams() {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     const code = urlParams.get('code');
 
     if (token) {
-      this.codeInput.value = token;
+      // Store token internally but fetch and display the readable code
+      this.tokenValue = token;
+      this.codeInput.value = 'Loading...';
       this.codeBadge.textContent = 'Token detected';
       this.codeBadge.classList.add('active');
+      
+      // Fetch the readable code from backend
+      await this.fetchCodeFromToken(token);
     } else if (code) {
       this.codeInput.value = code;
       this.codeBadge.textContent = 'Code detected';
       this.codeBadge.classList.add('active');
+    }
+  }
+
+  async fetchCodeFromToken(token) {
+    try {
+      // Lookup the readable code for this token
+      const response = await fetch(`/api/lookup?token=${encodeURIComponent(token)}`);
+      const data = await response.json();
+      
+      if (data.success && data.data.code) {
+        // Display the readable code (e.g., PLY008)
+        this.codeInput.value = data.data.code;
+        this.codeBadge.textContent = `${data.data.product} (${data.data.points} pts)`;
+      } else {
+        // If can't fetch, show the token
+        this.codeInput.value = token;
+        this.codeBadge.textContent = 'Token detected';
+      }
+    } catch (error) {
+      // If error, show the token
+      this.codeInput.value = token;
+      this.codeBadge.textContent = 'Token detected';
     }
   }
 
@@ -84,13 +111,16 @@ class RedemptionApp {
     this.setLoading(true);
 
     try {
+      // Use token if available, otherwise use the displayed code
+      const codeToSend = this.tokenValue || code;
+      
       const response = await fetch('/api/redeem', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          code,
+          code: codeToSend,
           name,
           phone,
         }),
